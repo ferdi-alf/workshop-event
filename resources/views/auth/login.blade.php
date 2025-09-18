@@ -26,8 +26,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-envelope text-gray-400"></i>
                             </div>
-                            <x-text-input id="email" type="email" name="email" :value="old('email')" required
-                                autofocus autocomplete="username" placeholder="Enter your email" />
+                            <x-fragments.text-field label="Email" name="email" type="email"
+                                placeholder="Masukan Email" required class="mt-4" />
                         </div>
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
@@ -35,8 +35,9 @@
 
                     <div class="space-y-2">
                         <x-input-label for="password" :value="__('Password')" class="text-gray-700 font-medium" />
-                        <x-text-input id="password" name="password" type="password" required
-                            placeholder="Enter your password" />
+                        <x-fragments.text-field label="Password" name="password" type="password" placeholder="*******"
+                            required class="mt-4" />
+
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
