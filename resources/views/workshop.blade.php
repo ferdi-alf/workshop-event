@@ -47,10 +47,9 @@
                 <div class="grid grid-cols-2 gap-4">
                     <x-fragments.text-field color="light" type="number" label="Quota" name="quota" required />
                     <x-fragments.select-field color="light" name="status" label="Status Workshop" :options="[
-                        'coming_soon' => 'Coming Soon',
                         'inactive' => 'Inactive',
                         'registered' => 'Registered',
-                        'full' => 'Full',
+                        'finished' => 'finished',
                     ]"
                         value="{{ old('status', $workshop->status ?? '') }}" required />
 

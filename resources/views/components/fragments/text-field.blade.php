@@ -6,6 +6,7 @@
     'value' => '',
     'required' => false,
     'color' => 'dark',
+    'fullwidth' => false,
 ])
 
 @php
@@ -15,7 +16,7 @@
         : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500';
 @endphp
 
-<div>
+<div class="{{ $fullwidth ? 'w-full' : '' }} ">
     @if ($label)
         <label for="{{ $name }}"
             class="block mb-2 text-sm font-medium {{ $color === 'dark' ? 'text-gray-900' : 'text-white' }}">

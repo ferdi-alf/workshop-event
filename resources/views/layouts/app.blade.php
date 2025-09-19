@@ -58,17 +58,17 @@
     </style>
 </head>
 
-<body class="font-sans relative antialiased bg-gradient-to-br from-sky-800 via-sky-700 to-teal-400 min-h-screen">
+<body class="font-sans relative antialiased bg-gradient-to-br from-sky-700 via-sky-700 to-teal-700 min-h-screen">
     @stack('modals')
 
     <div class="h-svh  grid grid-cols-12 gap-3 p-7">
 
-        <div class="col-span-2">
+        <div class="col-span-2 md:block hidden">
             @include('components.sidebar')
         </div>
         <!-- Page Content -->
         <div
-            class="w-full  border-3 border-white/65 col-span-10 bg-white/35 h-full
+            class="w-full  border-3 border-white/65 md:col-span-10 col-span-12 bg-white/35 h-full
         overflow-x-auto backdrop-blur-xl rounded-xl p-6 shadow-lg
         scrollbar">
             @yield('content')

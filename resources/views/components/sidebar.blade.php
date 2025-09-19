@@ -12,9 +12,10 @@
 
         <x-sidebar-item href="{{ route('dashboard') }}" :active="request()->routeIs('banner*')" icon="images" label="Banners" />
 
-        <x-sidebar-item href="{{ route('dashboard') }}" :active="request()->routeIs('feedback*')" icon="comments" label="Feedback" />
+        <x-sidebar-item href="{{ route('feedback.index') }}" :active="request()->routeIs('feedback*')" icon="comments" label="Feedback" />
 
-        <x-sidebar-item href="{{ route('dashboard') }}" :active="request()->routeIs('participants*')" icon="users" label="Participants" />
+        <x-sidebar-item href="{{ route('participants.index') }}" :active="request()->routeIs('participants*')" icon="users"
+            label="Participants" />
     </ul>
 
 </div>

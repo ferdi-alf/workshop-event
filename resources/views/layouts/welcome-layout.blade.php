@@ -5,8 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Workshop Flutter UI – Roadshow Syneps')</title>
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
@@ -41,14 +43,16 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <img src="{{ asset('img/logo.png') }}" alt="logo" class="w-10 h-10 mr-3" />
-                    <h1 class="text-xl font-bold gradient-text">Syneps</h1>
+                    <h1 class="text-xl font-bold gradient-text">Syneps Academy</h1>
                 </div>
                 <div class="hidden md:block">
                     <div class="flex items-center space-x-8">
                         <a href="#about" class="text-gray-700 hover:text-blue-600 transition-colors">About</a>
                         <a href="#benefits" class="text-gray-700 hover:text-blue-600 transition-colors">Benefits</a>
                         <a href="#details" class="text-gray-700 hover:text-blue-600 transition-colors">Details</a>
-                        <x-gradient-button href="/login" type="link">login</x-gradient-button>
+                        <x-gradient-button href="/login" type="link">
+                            {{ Auth::check() ? 'Dashboard' : 'Login' }}
+                        </x-gradient-button>
                     </div>
                 </div>
             </div>
@@ -106,12 +110,40 @@
                 </div>
             </div>
             <div class="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-                <p>&copy; {{ date('Y') }} Syneps. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Syneps Academy. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('alert'))
+            @php $alert = session('alert'); @endphp
 
+            Swal.fire({
+                icon: '{{ $alert['type'] }}',
+                title: '{{ $alert['title'] }}',
+                text: '{{ $alert['message'] }}',
+                confirmButtonColor: '#60a5fa',
+                timer: 6000,
+                timerProgressBar: true
+            });
+        @endif
+
+        @if ($errors->any())
+            let errorMessages = '';
+            @foreach ($errors->all() as $error)
+                errorMessages += '• {{ $error }}\n';
+            @endforeach
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: errorMessages,
+                confirmButtonColor: '#991b1b'
+            });
+        @endif
+    </script>
 </body>
 
 </html>

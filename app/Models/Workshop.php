@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Workshop extends Model
 {
@@ -31,5 +32,42 @@ class Workshop extends Model
     public function feedbackQuestions()
     {
         return $this->hasMany(FeedbackQuestion::class);
+    }
+
+    public function getSlugatAttribute()
+    {
+        return Str::slug($this->title);
+    }
+
+    public function findBySlug($slug)
+    {
+        return static::all()->first(function($workshop) use ($slug) {
+            return Str::slug($workshop->title) === $slug;
+        });
+    }
+
+    public function isQuotaFull()
+    {
+        return $this->participants()->count() >= $this->quota;
+    }
+
+    public function getRemainingQuotaAttribute()
+    {
+        return $this->quota - $this->participants()->count();
+    }
+
+    public function getParticipantCountAttribute()
+    {
+        return $this->participants()->count();
+    }
+
+    public function isFinished()
+    {
+        return $this->status === 'finished';
+    }
+
+    public function canRegister()
+    {
+        return $this->status === 'registered' && !$this->isQuotaFull();
     }
 }

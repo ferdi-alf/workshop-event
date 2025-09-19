@@ -23,7 +23,7 @@ class WorkshopController extends Controller
             'location'    => 'required|string|max:255',
             'benefit'     => 'required|string',
             'quota'       => 'required|integer',
-            'status'      => 'required|string|in:coming_soon,inactive,registered,full',
+            'status'      => 'required|string|in:,inactive,registered,finished',
         ]);
 
         if ($request->status === 'registered') {
@@ -49,7 +49,7 @@ class WorkshopController extends Controller
             'location'    => 'required|string|max:255',
             'benefit'     => 'required|string',
             'quota'       => 'required|integer',
-            'status'      => 'required|string|in:coming_soon,inactive,registered,full',
+            'status'      => 'required|string|in:,inactive,registered,finished',
         ]);
 
         $workshop = Workshop::findOrFail($id);

@@ -155,6 +155,8 @@
     </section>
 
     <!-- Workshop Details Section -->
+    @php use Illuminate\Support\Str; @endphp
+
     <section id="details" class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -163,40 +165,105 @@
                 </h2>
                 <div class="w-24 h-1 gradient-bg mx-auto mb-8"></div>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Segala yang perlu Anda ketahui tentang Workshop Flutter UI kami yang komprehensif.
+                    Segala yang perlu Anda ketahui tentang {{ $workshop ? $workshop->title : 'Workshop' }} kami yang
+                    komprehensif.
                 </p>
             </div>
 
-            <div class="grid grid-cols- md:grid-cols-2 gap-8">
-                <x-detail-card icon="fas fa-palette" title="Workshop Theme"
-                    description="Master Flutter UI/UX Design - From basic widgets to advanced animations and custom components. Learn Material Design principles and create stunning mobile interfaces." />
-
-                <x-detail-card icon="fas fa-clock" title="Schedule & Duration"
-                    description="Full-day intensive workshop from 09:00 to 17:00 WIB on November 25, 2024. Includes breaks, networking lunch, and hands-on coding sessions." />
-
-                <x-detail-card icon="fas fa-map-marker-alt" title="Location & Venue"
-                    description="Jakarta Convention Center, Hall A - Premium workshop venue with modern facilities, high-speed internet, and comfortable learning environment."
-                    highlight="true" />
-
-                <x-detail-card icon="fas fa-trophy" title="Main Benefits"
-                    description="Gain practical Flutter UI skills, receive official certificate, access to exclusive resources, lifetime community access, and networking with fellow developers."
-                    highlight="true" />
-            </div>
-
-            <!-- Registration CTA -->
-            <div class="text-center mt-12">
-                <div class="bg-white rounded-2xl shadow-lg p-8 inline-block">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Ready to Join?</h3>
-                    <p class="text-gray-600 mb-6">Don't miss this opportunity to advance your Flutter development skills!
-                    </p>
-                    <x-gradient-button href="#register" size="large" type="link" id="register">
-                        <i class="fas fa-user-plus mr-2"></i>
-                        Register Now
-                    </x-gradient-button>
-                    <p class="text-sm text-gray-500 mt-4">Limited seats available • Early bird pricing until November 15
-                    </p>
+            @if ($workshop)
+                <div class="text-center mb-8">
+                    @if ($workshop->status === 'finished')
+                        <span class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Workshop Selesai
+                        </span>
+                    @elseif ($isQuotaFull ?? false)
+                        <span class="inline-block bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+                            <i class="fas fa-users mr-1"></i>
+                            Kuota Penuh
+                        </span>
+                    @else
+                        <span class="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                            <i class="fas fa-calendar-check mr-1"></i>
+                            Pendaftaran Terbuka
+                        </span>
+                    @endif
                 </div>
-            </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <x-detail-card icon="fas fa-palette" title="Workshop Theme"
+                        description="{{ $workshop->title }} - {{ $workshop->description }}" />
+
+                    <x-detail-card icon="fas fa-clock" title="Schedule & Duration"
+                        description="Workshop pada {{ date('d F Y', strtotime($workshop->date)) }} dari {{ date('H:i', strtotime($workshop->time_start)) }} sampai {{ date('H:i', strtotime($workshop->time_end)) }} WIB." />
+
+                    <x-detail-card icon="fas fa-map-marker-alt" title="Location & Venue"
+                        description="{{ $workshop->location }}" highlight="true" />
+
+                    <x-detail-card icon="fas fa-trophy" title="Main Benefits"
+                        description="{{ $workshop->benefit }} | Peserta terdaftar: {{ $participantCount ?? 0 }}/{{ $workshop->quota }}"
+                        highlight="true" />
+                </div>
+
+                <div class="text-center mt-12">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 inline-block">
+                        @if ($workshop->status === 'finished')
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Workshop Telah Selesai</h3>
+                            <p class="text-gray-600 mb-6">
+                                Workshop {{ $workshop->title }} telah selesai dilaksanakan. Berikan feedback Anda untuk
+                                membantu kami meningkatkan kualitas workshop selanjutnya.
+                            </p>
+                            <x-gradient-button href="{{ route('feedback.create', Str::slug($workshop->title)) }}"
+                                size="large" type="link" id="feedback">
+                                <i class="fas fa-comment-alt mr-2"></i>
+                                Berikan Feedback
+                            </x-gradient-button>
+                            <p class="text-sm text-gray-500 mt-4">
+                                Workshop selesai pada {{ date('d F Y', strtotime($workshop->date)) }}
+                            </p>
+                        @elseif ($isQuotaFull ?? false)
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Kuota Sudah Penuh</h3>
+                            <p class="text-gray-600 mb-6">
+                                Maaf, kuota untuk {{ $workshop->title }} sudah penuh. Nantikan workshop berikutnya!
+                            </p>
+                            <button disabled
+                                class="bg-gray-400 text-white px-8 py-3 rounded-lg font-semibold text-lg cursor-not-allowed opacity-60">
+                                <i class="fas fa-user-times mr-2"></i>
+                                Kuota Penuh
+                            </button>
+                            <p class="text-sm text-gray-500 mt-4">
+                                Kuota penuh ({{ $participantCount ?? 0 }}/{{ $workshop->quota }} peserta)
+                            </p>
+                        @else
+                            <h3 class="text-2xl font-bold gradient-text mb-4">{{ $workshop->title }}</h3>
+                            <div class="w-24 h-1 gradient-bg mx-auto mb-3"></div>
+
+                            <p class="text-gray-600 mb-6">
+                                Jangan lewatkan kesempatan ini untuk meningkatkan keterampilan pengembangan Anda dengan
+                                {{ $workshop->title }}!
+                            </p>
+                            <x-gradient-button href="{{ route('workshop.register', Str::slug($workshop->title)) }}"
+                                size="large" type="link" id="register">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                Register Now
+                            </x-gradient-button>
+                            <p class="text-sm text-gray-500 mt-4">
+                                Sisa kuota: {{ $workshop->quota - ($participantCount ?? 0) }} dari {{ $workshop->quota }}
+                                peserta • Ayo Daftar Sekarang!
+                            </p>
+                        @endif
+                    </div>
+                </div>
+            @else
+                <div class="text-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 inline-block">
+                        <i class="fas fa-calendar-times text-gray-400 text-6xl mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Tidak Ada Workshop</h3>
+                        <p class="text-gray-600">Belum ada workshop yang tersedia saat ini. Nantikan workshop menarik dari
+                            kami!</p>
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 @endsection
