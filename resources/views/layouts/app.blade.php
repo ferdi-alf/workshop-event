@@ -58,21 +58,36 @@
     </style>
 </head>
 
-<body class="font-sans relative antialiased bg-gradient-to-br from-sky-700 via-sky-700 to-teal-700 min-h-screen">
+<body
+    class="font-sans relative antialiased bg-gradient-to-br overflow-auto from-sky-700 via-sky-700 to-teal-700 min-h-screen ">
     @stack('modals')
 
-    <div class="h-svh  grid grid-cols-12 gap-3 p-7">
+    <div class="h-svh  grid sm:mb-0 mb-20 grid-cols-12 gap-3 p-2 md:p-7 ">
 
         <div class="col-span-2 md:block hidden">
             @include('components.sidebar')
         </div>
         <!-- Page Content -->
         <div
-            class="w-full  border-3 border-white/65 md:col-span-10 col-span-12 bg-white/35 h-full
+            class="w-full  border-3 border-white/65 md:col-span-10 col-span-12 bg-white/25 h-full
         overflow-x-auto backdrop-blur-xl rounded-xl p-6 shadow-lg
         scrollbar">
             @yield('content')
         </div>
+
+    </div>
+
+    <div
+        class="fixed sm:hidden text-center flex justify-evenly  bg-white/35 backdrop-blur-xl w-full shadow-lg p-3 bottom-0">
+        <x-sidebar-item href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" icon="home" label="Dashboard" />
+
+        <x-sidebar-item href="{{ route('user.index') }}" :active="request()->routeIs('user*')" icon="user" label="Users" />
+
+        <x-sidebar-item href="{{ route('workshop.index') }}" :active="request()->routeIs('workshop*')" icon="calendar-days" label="Workshop" />
+
+        <x-sidebar-item href="{{ route('banner.index') }}" :active="request()->routeIs('banner*')" icon="images" label="Banners" />
+
+        <x-sidebar-item href="{{ route('profile.edit') }}" :active="request()->routeIs('profile*')" icon="gear" label="Profile" />
 
     </div>
 

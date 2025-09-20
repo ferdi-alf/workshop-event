@@ -1,3 +1,4 @@
+{{-- components/drawers-layout --}}
 @props([
     'id' => 'default-drawer',
     'title' => 'Detail Data',
@@ -7,7 +8,7 @@
 <div id="{{ $id }}-overlay" onclick="handleOverlayClick(event, '{{ $id }}')"
     class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300">
     <div id="{{ $id }}-drawer"
-        class="fixed bottom-0 left-0 right-0 h-[80vh] bg-white rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-out flex flex-col"
+        class="fixed bottom-0 left-0 right-0 h-[80vh] backdrop-blur-2xl bg-white/15 rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-out flex flex-col"
         onclick="event.stopPropagation()">
 
         <div class="flex justify-center pt-3 pb-2" id="{{ $id }}-drag-handle">
@@ -17,9 +18,10 @@
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl font-semibold text-gray-900" id="{{ $id }}-title">{{ $title }}
+                    <h2 class="text-xl font-bold bg-transparent bg-clip-text bg-gradient-to-br text-transparent from-blue-500 via-teal-500 to-teal-600"
+                        id="{{ $id }}-title">{{ $title }}
                     </h2>
-                    <p class="text-sm text-gray-600 mt-1" id="{{ $id }}-description">{{ $description }}</p>
+                    <p class="text-sm text-gray-300 mt-1" id="{{ $id }}-description">{{ $description }}</p>
                 </div>
                 <button onclick="closeDrawer('{{ $id }}')"
                     class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">

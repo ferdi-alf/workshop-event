@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannersController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ParticipantsController;
@@ -16,6 +17,9 @@ Route::get('/workshop/register/{slug}', [IndexController::class, 'register'])
 
 Route::post('/workshop/register/{slug}', [IndexController::class, 'store'])
     ->name('workshop.register.store');
+
+    Route::get('/feedback/{slug}/page', [FeedbackController::class, 'getPage'])->name('feedback.create');
+    Route::post('/feedback/{slug}/page', [FeedbackController::class, 'storeFeedbackByUser'])->name('feedback.storeByUser');
     
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -28,10 +32,14 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(WorkshopController::class)->prefix('workshop')->name('workshop.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/{id}', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show');
         Route::post('/', 'store')->name('store');
         Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
+        Route::get('/{id}/download-pdf', 'downloadPDF')->name('downloadPDF');
+        Route::get('/{id}/participants', 'getParticipants')->name('participants');
+        Route::get('/{id}/feedback-questions', 'getFeedbackQuestions')->name('feedbackQuestions');
+        Route::get('/{id}/analytics', 'getAnalytics')->name('analytics');
     });
     
     Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
@@ -52,8 +60,17 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(FeedbackController::class)->prefix('feedback')->name('feedback.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/search', 'searchWorkshops')->name('search'); // Route baru untuk search
+        Route::get('/search', 'searchWorkshops')->name('search'); 
         Route::post('/', 'store')->name('store');
+    });
+
+   Route::controller(BannersController::class)->prefix('banner')->name('banner.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+        Route::post('/update-positions', 'updatePositions')->name('updatePositions');
     });
 });
 

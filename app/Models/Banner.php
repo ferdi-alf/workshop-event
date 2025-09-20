@@ -10,10 +10,18 @@ class Banner extends Model
         'workshop_id',
         'image_url',
         'caption',
+        'position'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function workshop()
     {
         return $this->belongsTo(Workshop::class);
     }
+
+    
 }

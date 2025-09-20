@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AlertHelper;
+use App\Models\Banner;
 use App\Models\Participant;
 use App\Models\Workshop;
 use Illuminate\Support\Facades\Log;
@@ -29,8 +30,13 @@ class IndexController extends Controller
             $participantCount = $workshop->participants()->count();
             $isQuotaFull = $participantCount >= $workshop->quota;
         }
+
+        $banners = Banner::where('workshop_id', $workshop ? $workshop->id : null)
+                        ->orderBy('position', 'asc')
+                        ->get();
+
+                        return view('welcome', compact('workshop', 'participantCount', 'isQuotaFull', 'banners'));
         
-        return view('welcome', compact('workshop', 'participantCount', 'isQuotaFull'));
     }
 
     public function register($slug)

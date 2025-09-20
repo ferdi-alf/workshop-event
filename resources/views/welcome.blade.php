@@ -3,65 +3,59 @@
 @section('title', 'Workshop Flutter UI – Roadshow Syneps | Master Flutter UI Development')
 
 @section('content')
-    <!-- Hero Section with Flowbite Slideshow -->
+
     <section class="relative">
         <div id="default-carousel" class="relative w-full" data-carousel="slide">
             <div class="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden">
-                <!-- Item 1 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-500 flex items-start justify-center">
-                        <div class="text-center text-white px-4 max-w-4xl mx-auto">
-                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                                Workshop Flutter UI
-                            </h1>
-                            <p class="text-lg md:text-xl mb-8 text-blue-100">
-                                Roadshow Syneps – Master the art of beautiful Flutter interfaces
-                            </p>
+                @forelse ($banners as $index => $banner)
+                    <!-- Carousel Item -->
+                    <div class="{{ $index === 0 ? '' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
+                        <div class="absolute inset-0 flex items-start justify-center">
+                            <img src="/img/banners/{{ $banner->image_url }}" alt="{{ $banner->caption }}"
+                                class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-40"></div> <!-- Overlay for text contrast -->
+                            <div class="relative text-center text-white px-4 max-w-4xl mt-32 z-10">
+                                <h1
+                                    class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-md">
+                                    {{ $banner->caption ?? 'Workshop Flutter UI' }}
+                                </h1>
+                                <p class="text-lg md:text-xl mb-8 text-gray-100 drop-shadow-md">
+                                    {{ $banner->caption ? 'Roadshow Syneps – ' . $banner->caption : 'Roadshow Syneps – Master the art of beautiful Flutter interfaces' }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Item 2 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <div
-                        class="absolute inset-0 bg-gradient-to-l from-teal-500 to-blue-600 flex items-center justify-center">
-                        <div class="text-center text-white px-4 max-w-4xl mx-auto">
-                            <h2 class="text-3xl md:text-5xl font-bold mb-6">
-                                Join Our Intensive Workshop
-                            </h2>
-                            <p class="text-lg md:text-xl mb-8 text-teal-100">
-                                Master UI/UX with Flutter and create stunning mobile applications
-                            </p>
-
+                @empty
+                    <!-- Fallback Item -->
+                    <div class="duration-700 ease-in-out" data-carousel-item>
+                        <div class="absolute inset-0 flex items-start justify-center">
+                            <div class="relative text-center text-white px-4 max-w-4xl mt-32 z-10">
+                                <h1
+                                    class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-md">
+                                    Workshop Flutter UI
+                                </h1>
+                                <p class="text-lg md:text-xl mb-8 text-gray-100 drop-shadow-md">
+                                    Roadshow Syneps – Master the art of beautiful Flutter interfaces
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Item 3 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-blue-500 via-teal-400 to-teal-600 flex items-center justify-center">
-                        <div class="text-center text-white px-4 max-w-4xl mx-auto">
-                            <h2 class="text-3xl md:text-5xl font-bold mb-6">
-                                Expert Instructors
-                            </h2>
-                            <p class="text-lg md:text-xl mb-8 text-blue-100">
-                                Learn from industry professionals with years of Flutter development experience
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
 
+            <!-- Carousel Dots -->
             <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                <button type="button"
-                    class="w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"
-                    aria-current="true" data-carousel-slide-to="0"></button>
-                <button type="button"
-                    class="w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"
-                    data-carousel-slide-to="1"></button>
-                <button type="button"
-                    class="w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"
-                    data-carousel-slide-to="2"></button>
+                @forelse ($banners as $index => $banner)
+                    <button type="button" class="w-3 h-3 rounded-full bg-white  transition-all"
+                        aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                        data-carousel-slide-to="{{ $index }}"></button>
+                @empty
+                    <button type="button" class="w-3 h-3 rounded-full bg-white 0 transition-all" aria-current="true"
+                        data-carousel-slide-to="0"></button>
+                @endforelse
             </div>
+
+            <!-- Carousel Controls -->
             <button type="button"
                 class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                 data-carousel-prev>

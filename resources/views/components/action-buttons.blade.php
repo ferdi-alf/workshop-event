@@ -1,4 +1,4 @@
-{{-- resources/views/components/fragments/action-button --}}
+{{-- resources/views/components/action-buttons --}}
 @props([
     'modalTarget' => null,
     'drawerId' => null,
