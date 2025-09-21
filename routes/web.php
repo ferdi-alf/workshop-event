@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannersController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ParticipantsController;
@@ -21,9 +22,7 @@ Route::post('/workshop/register/{slug}', [IndexController::class, 'store'])
     Route::get('/feedback/{slug}/page', [FeedbackController::class, 'getPage'])->name('feedback.create');
     Route::post('/feedback/{slug}/page', [FeedbackController::class, 'storeFeedbackByUser'])->name('feedback.storeByUser');
     
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,13 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::controller(WorkshopController::class)->prefix('workshop')->name('workshop.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{id}', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
-        Route::put('/{id}', 'update')->name('update');
-        Route::delete('/{id}', 'destroy')->name('destroy');
         Route::get('/{id}/download-pdf', 'downloadPDF')->name('downloadPDF');
         Route::get('/{id}/participants', 'getParticipants')->name('participants');
         Route::get('/{id}/feedback-questions', 'getFeedbackQuestions')->name('feedbackQuestions');
         Route::get('/{id}/analytics', 'getAnalytics')->name('analytics');
+        Route::post('/', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/delete/{id}', 'destroy')->name('destroy');
     });
     
     Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {

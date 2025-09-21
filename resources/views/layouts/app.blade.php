@@ -58,21 +58,21 @@
     </style>
 </head>
 
-<body
-    class="font-sans relative antialiased bg-gradient-to-br overflow-auto from-sky-700 via-sky-700 to-teal-700 min-h-screen ">
+<body class="font-sans relative   antialiased bg-gradient-to-br overflow-auto from-blue-300 via-teal-600 to-teal-700  ">
     @stack('modals')
 
-    <div class="h-svh  grid sm:mb-0 mb-20 grid-cols-12 gap-3 p-2 md:p-7 ">
-
-        <div class="col-span-2 md:block hidden">
-            @include('components.sidebar')
-        </div>
-        <!-- Page Content -->
-        <div
-            class="w-full  border-3 border-white/65 md:col-span-10 col-span-12 bg-white/25 h-full
-        overflow-x-auto backdrop-blur-xl rounded-xl p-6 shadow-lg
-        scrollbar">
-            @yield('content')
+    <div class="  p-3  ">
+        <div class=" grid sm:mb-0 mb-20 grid-cols-12 gap-3 ">
+            <div class="col-span-2 md:block hidden">
+                @include('components.sidebar')
+            </div>
+            <!-- Page Content -->
+            <div
+                class="w-full h-screen  border-3 border-white/65 md:col-span-10 col-span-12 bg-white/25
+    overflow-x-auto backdrop-blur-xl rounded-xl p-6 shadow-lg
+    scrollbar">
+                @yield('content')
+            </div>
         </div>
 
     </div>

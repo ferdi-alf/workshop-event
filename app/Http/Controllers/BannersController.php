@@ -15,7 +15,7 @@ class BannersController extends Controller
         return view('banner', compact('banners'));
     }
 
-   public function show($id)
+    public function show($id)
     {
         try {
             $banner = Banner::with('workshop')->findOrFail($id);

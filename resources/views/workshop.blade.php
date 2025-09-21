@@ -732,7 +732,7 @@
                             }
                         });
 
-                        // Render bar charts
+
                         barCharts.forEach((item, index) => {
                             const ctx = document.getElementById(`barChart_${index}`);
                             if (ctx) {
@@ -799,110 +799,117 @@
                 }
             }
 
-            function tabComponent(workshopId) {
-                return {
-                    activeTab: 0,
-                    indicatorWidth: 0,
-                    indicatorOffset: 0,
-                    participants: [],
-                    feedbackQuestions: [],
-                    workshopId: workshopId,
+        }
 
-                    tabs: [{
-                            title: 'Participants'
-                        },
-                        {
-                            title: 'Feedback Questions'
-                        }
-                    ],
+        function tabComponent(workshopId) {
+            return {
+                activeTab: 0,
+                indicatorWidth: 0,
+                indicatorOffset: 0,
+                participants: [],
+                feedbackQuestions: [],
+                workshopId: workshopId,
 
-                    init() {
+                tabs: [{
+                        title: 'Participants'
+                    },
+                    {
+                        title: 'Feedback Questions'
+                    }
+                ],
+
+                init() {
+
+                    this.$nextTick(() => {
                         this.loadParticipants();
                         this.loadFeedbackQuestions();
+                    });
 
-                        this.$nextTick(() => {
-                            this.updateIndicator();
-                        });
+                    // Bagian indicator tetap seperti semula
+                    this.$nextTick(() => {
+                        this.updateIndicator();
+                    });
 
-                        setTimeout(() => {
-                            this.updateIndicator();
-                        }, 50);
+                    setTimeout(() => {
+                        this.updateIndicator();
+                    }, 50);
 
-                        window.addEventListener('resize', () => {
-                            this.updateIndicator();
-                        });
-                    },
+                    window.addEventListener('resize', () => {
+                        this.updateIndicator();
+                    });
+                },
 
-                    async loadParticipants() {
-                        try {
-                            const response = await fetch(`/workshop/${this.workshopId}/participants`);
-                            const data = await response.json();
-                            if (data.success) {
-                                this.participants = data.data;
-                            }
-                        } catch (error) {
-                            console.error('Error loading participants:', error);
+                async loadParticipants() {
+                    console.log('Loading participants for workshop:', this.workshopId); // Debug
+                    try {
+                        const response = await fetch(`/workshop/${this.workshopId}/participants`);
+                        const data = await response.json();
+                        console.log('Participants response:', data); // Debug
+                        if (data.success) {
+                            this.participants = data.data;
+                            console.log('Participants loaded:', this.participants.length); // Debug
                         }
-                    },
-
-                    async loadFeedbackQuestions() {
-                        try {
-                            const response = await fetch(`/workshop/${this.workshopId}/feedback-questions`);
-                            const data = await response.json();
-                            if (data.success) {
-                                this.feedbackQuestions = data.data;
-                            }
-                        } catch (error) {
-                            console.error('Error loading feedback questions:', error);
+                    } catch (error) {
+                        console.error('Error loading participants:', error);
+                    }
+                },
+                async loadFeedbackQuestions() {
+                    try {
+                        const response = await fetch(`/workshop/${this.workshopId}/feedback-questions`);
+                        const data = await response.json();
+                        if (data.success) {
+                            this.feedbackQuestions = data.data;
                         }
-                    },
+                    } catch (error) {
+                        console.error('Error loading feedback questions:', error);
+                    }
+                },
 
-                    switchTab(index) {
-                        this.activeTab = index;
-                        this.$nextTick(() => {
-                            this.updateIndicator();
-                            this.scrollTabIntoView(index);
-                        });
-                    },
+                switchTab(index) {
+                    this.activeTab = index;
+                    this.$nextTick(() => {
+                        this.updateIndicator();
+                        this.scrollTabIntoView(index);
+                    });
+                },
 
-                    updateIndicator() {
-                        const buttons = this.$refs.tabHeader?.querySelectorAll('button');
-                        if (buttons && buttons[this.activeTab]) {
-                            const activeButton = buttons[this.activeTab];
-                            this.indicatorWidth = activeButton.offsetWidth;
-                            this.indicatorOffset = activeButton.offsetLeft;
+                updateIndicator() {
+                    const buttons = this.$refs.tabHeader?.querySelectorAll('button');
+                    if (buttons && buttons[this.activeTab]) {
+                        const activeButton = buttons[this.activeTab];
+                        this.indicatorWidth = activeButton.offsetWidth;
+                        this.indicatorOffset = activeButton.offsetLeft;
 
-                            if (this.indicatorWidth === 0) {
-                                setTimeout(() => {
-                                    this.indicatorWidth = activeButton.offsetWidth;
-                                    this.indicatorOffset = activeButton.offsetLeft;
-                                }, 10);
-                            }
+                        if (this.indicatorWidth === 0) {
+                            setTimeout(() => {
+                                this.indicatorWidth = activeButton.offsetWidth;
+                                this.indicatorOffset = activeButton.offsetLeft;
+                            }, 10);
                         }
-                    },
+                    }
+                },
 
-                    scrollTabIntoView(index) {
-                        const buttons = this.$refs.tabHeader.querySelectorAll('button');
-                        if (buttons[index]) {
-                            const button = buttons[index];
-                            const header = this.$refs.tabHeader;
+                scrollTabIntoView(index) {
+                    const buttons = this.$refs.tabHeader.querySelectorAll('button');
+                    if (buttons[index]) {
+                        const button = buttons[index];
+                        const header = this.$refs.tabHeader;
 
-                            const buttonLeft = button.offsetLeft;
-                            const buttonRight = buttonLeft + button.offsetWidth;
-                            const headerScrollLeft = header.scrollLeft;
-                            const headerWidth = header.offsetWidth;
+                        const buttonLeft = button.offsetLeft;
+                        const buttonRight = buttonLeft + button.offsetWidth;
+                        const headerScrollLeft = header.scrollLeft;
+                        const headerWidth = header.offsetWidth;
 
-                            if (buttonLeft < headerScrollLeft) {
-                                header.scrollTo({
-                                    left: buttonLeft - 20,
-                                    behavior: 'smooth'
-                                });
-                            } else if (buttonRight > headerScrollLeft + headerWidth) {
-                                header.scrollTo({
-                                    left: buttonRight - headerWidth + 20,
-                                    behavior: 'smooth'
-                                });
-                            }
+                        if (buttonLeft < headerScrollLeft) {
+                            header.scrollTo({
+                                left: buttonLeft - 20,
+                                behavior: 'smooth'
+                            });
+                        } else if (buttonRight > headerScrollLeft + headerWidth) {
+                            header.scrollTo({
+                                left: buttonRight - headerWidth + 20,
+                                behavior: 'smooth'
+                            });
                         }
                     }
                 }

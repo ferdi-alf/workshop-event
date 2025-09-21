@@ -10,7 +10,7 @@
         'class' =>
             'flex flex-col sm:flex-row items-center px-2 sm:px-4 py-1 sm:py-2 rounded-lg text-xs sm:text-sm ' .
             ($active
-                ? 'text-transparent bg-clip-text bg-gradient-to-br from-blue-400 via-teal-500 to-teal-700 sm:text-white sm:font-medium sm:shadow-md sm:backdrop-blur-2xl'
+                ? 'text-transparent bg-clip-text bg-gradient-to-br from-blue-200 via-teal-400 to-teal-300 sm:text-white sm:font-medium sm:shadow-md sm:backdrop-blur-2xl'
                 : 'text-white hover:shadow-sm hover:backdrop-blur-2xl'),
     ]) }}>
     @if ($icon)

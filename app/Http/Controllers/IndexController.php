@@ -31,8 +31,7 @@ class IndexController extends Controller
             $isQuotaFull = $participantCount >= $workshop->quota;
         }
 
-        $banners = Banner::where('workshop_id', $workshop ? $workshop->id : null)
-                        ->orderBy('position', 'asc')
+        $banners = Banner::orderBy('position', 'asc')
                         ->get();
 
                         return view('welcome', compact('workshop', 'participantCount', 'isQuotaFull', 'banners'));

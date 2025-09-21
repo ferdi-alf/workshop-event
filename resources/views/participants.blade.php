@@ -4,7 +4,7 @@
         :columns="[
             fn($row, $i) => $i + 1,
             fn($row) => $row->name,
-            fn($row) => $row->whatsapp,
+            fn($row) => $row->clickToWhatsapp(),
             fn($row) => $row->email,
             fn($row) => $row->campus,
             fn($row) => $row->major,

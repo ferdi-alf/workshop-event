@@ -21,7 +21,6 @@
 
                     <!-- Email Address -->
                     <div class="space-y-2">
-                        <x-input-label for="email" :value="__('Email Address')" class="text-gray-700 font-medium" />
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-envelope text-gray-400"></i>
@@ -29,12 +28,10 @@
                             <x-fragments.text-field label="Email" name="email" type="email"
                                 placeholder="Masukan Email" required class="mt-4" />
                         </div>
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
 
                     <div class="space-y-2">
-                        <x-input-label for="password" :value="__('Password')" class="text-gray-700 font-medium" />
                         <x-fragments.text-field label="Password" name="password" type="password" placeholder="*******"
                             required class="mt-4" />
 
